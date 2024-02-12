@@ -2,16 +2,16 @@ function getComputerChoice() {
   var randomNumber = Math.random();
 
   if (randomNumber < 0.33) {
-    return "Rock";
+    return "rock";
   } else if (randomNumber < 0.66) {
-    return "Paper";
+    return "paper";
   } else {
-    return "Scissors";
+    return "scissors";
   }
 }
 
-let timesPlayerWon = 0;
-let timesComputerWon = 0;
+let playerScore = 0;
+let computerScore = 0;
 
 const displayResult = document.querySelector('#result');
 const displayPlayerScore = document.querySelector('#player-score');
@@ -19,47 +19,56 @@ const displayComputerScore = document.querySelector('#computer-score')
 const displayWinner = document.querySelector('#show-winner')
 
 document.addEventListener('DOMContentLoaded', function() {
-  let rock = document.querySelector('#rock');
-  let paper = document.querySelector('#paper');
-  let scissors = document.querySelector('#scissors');
-  let reset = document.querySelector('#reset')
-  rock.addEventListener('click', () => playRound('rock', getComputerChoice()));
-  paper.addEventListener('click', () => playRound('paper', getComputerChoice()));
-  scissors.addEventListener('click', () => playRound('scissors', getComputerChoice()));
-  reset.addEventListener('click', resetGame)
+  const buttons = document.querySelectorAll('.button');
+  const resetButton = document.querySelector('#reset');
+  
+  buttons.forEach(button => {
+    button.addEventListener('click', () => playRound(button.id, getComputerChoice()));
+  });
+
+  resetButton.addEventListener('click', resetGame)
 });
 
 function playRound(playerChoice, computerChoice) {
-  if (playerChoice.toLowerCase() === "rock" && computerChoice.toLowerCase() === "paper" || 
-  playerChoice.toLowerCase() === "paper" && computerChoice.toLowerCase() === "scissors" || 
-  playerChoice.toLowerCase() === "scissors" && computerChoice.toLowerCase() === "rock") {
-    timesComputerWon++;
-    displayComputerScore.innerHTML = `Computer score: ${timesComputerWon}`;
-    displayResult.innerHTML = 'The pc won this round';
-  } else if (playerChoice.toLowerCase() === computerChoice.toLowerCase()) {
+  displayWinner.textContent = "";
+  if (playerScore >= 5 || computerScore >= 5) {
+    resetGame();
+  }
+  if (playerChoice === "rock" && computerChoice === "paper" || 
+  playerChoice === "paper" && computerChoice === "scissors" || 
+  playerChoice === "scissors" && computerChoice === "rock") {
+    computerScore++;
+    displayComputerScore.textContent = `Computer score: ${computerScore}`;
+    displayResult.textContent = 'The pc won this round';
+  } else if (playerChoice === computerChoice) {
     console.log("empate")
-    displayResult.innerHTML = 'Draw';
+    displayResult.textContent = 'Draw';
   } else {
-    timesPlayerWon++;
-    displayPlayerScore.innerHTML = `Player score: ${timesPlayerWon}`;
-    displayResult.innerHTML = 'You won this round';
+    playerScore++;
+    displayPlayerScore.textContent = `Player score: ${playerScore}`;
+    displayResult.textContent = 'You won this round';
   }
-  if (timesComputerWon >= 5) {
-    displayWinner.innerHTML = "The computer won the best of 5";
+  checkGameEnd();
+}
+
+function checkGameEnd() { 
+  if (computerScore >= 5) {
+    displayWinner.textContent = "The computer won the best of 5";
   }
-  if (timesPlayerWon >= 5) {
-    displayWinner.innerHTML = "Congrats, you won the best of 5!";
+  if (playerScore >= 5) {
+    displayWinner.textContent = "Congrats, you won the best of 5!";
   }
 }
 
 function resetGame() {
-  timesPlayerWon = timesComputerWon = 0;
-  displayComputerScore.innerHTML = `Computer score: ${timesComputerWon}`;
-  displayPlayerScore.innerHTML = `Player score: ${timesPlayerWon}`;
-  displayResult.innerHTML = '';
-  displayWinner.innerHTML = '';
+  playerScore = computerScore = 0;
+  displayComputerScore.textContent = `Computer score: ${computerScore}`;
+  displayPlayerScore.textContent = `Player score: ${playerScore}`;
+  if (displayWinner.textContent != '') {
+    displayWinner.textContent = '';
+  }
+  displayWinner.textContent = '';
+  displayWinner.textContent = "The game has been reset";
 }
 
- 
 let computerSelection = getComputerChoice();
-console.log("está é a escolha da máquina: " + computerSelection)
