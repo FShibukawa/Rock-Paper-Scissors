@@ -9,50 +9,57 @@ function getComputerChoice() {
     return "Scissors";
   }
 }
+
 let timesPlayerWon = 0;
 let timesComputerWon = 0;
-var playerSelection = prompt("Choose rock, paper or scissors:");
 
-function playRound(playerSelection, computerSelection) {
-  if (playerSelection.toLowerCase() != "rock" && 
-  playerSelection.toLowerCase() != "paper" && 
-  playerSelection.toLowerCase() != "scissors") {
-    return "Do you know how to play?"
-  } else if (playerSelection.toLowerCase() === "rock" && computerSelection.toLowerCase() === "paper" || 
-  playerSelection.toLowerCase() === "paper" && computerSelection.toLowerCase() === "scissors" || 
-  playerSelection.toLowerCase() === "scissors" && computerSelection.toLowerCase() === "rock") {
+const displayResult = document.querySelector('#result');
+const displayPlayerScore = document.querySelector('#player-score');
+const displayComputerScore = document.querySelector('#computer-score')
+const displayWinner = document.querySelector('#show-winner')
+
+document.addEventListener('DOMContentLoaded', function() {
+  let rock = document.querySelector('#rock');
+  let paper = document.querySelector('#paper');
+  let scissors = document.querySelector('#scissors');
+  let reset = document.querySelector('#reset')
+  rock.addEventListener('click', () => playRound('rock', getComputerChoice()));
+  paper.addEventListener('click', () => playRound('paper', getComputerChoice()));
+  scissors.addEventListener('click', () => playRound('scissors', getComputerChoice()));
+  reset.addEventListener('click', resetGame)
+});
+
+function playRound(playerChoice, computerChoice) {
+  if (playerChoice.toLowerCase() === "rock" && computerChoice.toLowerCase() === "paper" || 
+  playerChoice.toLowerCase() === "paper" && computerChoice.toLowerCase() === "scissors" || 
+  playerChoice.toLowerCase() === "scissors" && computerChoice.toLowerCase() === "rock") {
     timesComputerWon++;
-    return "The computer won!";
-  } else if (playerSelection.toLowerCase() === computerSelection.toLowerCase()) {
-    return "Draw!";
+    displayComputerScore.innerHTML = `Computer score: ${timesComputerWon}`;
+    displayResult.innerHTML = 'The pc won this round';
+  } else if (playerChoice.toLowerCase() === computerChoice.toLowerCase()) {
+    console.log("empate")
+    displayResult.innerHTML = 'Draw';
   } else {
-    timesPlayerWon++
-    return "You won!"
+    timesPlayerWon++;
+    displayPlayerScore.innerHTML = `Player score: ${timesPlayerWon}`;
+    displayResult.innerHTML = 'You won this round';
+  }
+  if (timesComputerWon >= 5) {
+    displayWinner.innerHTML = "The computer won the best of 5";
+  }
+  if (timesPlayerWon >= 5) {
+    displayWinner.innerHTML = "Congrats, you won the best of 5!";
   }
 }
+
+function resetGame() {
+  timesPlayerWon = timesComputerWon = 0;
+  displayComputerScore.innerHTML = `Computer score: ${timesComputerWon}`;
+  displayPlayerScore.innerHTML = `Player score: ${timesPlayerWon}`;
+  displayResult.innerHTML = '';
+  displayWinner.innerHTML = '';
+}
+
  
-// const playerSelection = "rock";
 let computerSelection = getComputerChoice();
-console.log(playerSelection)
-console.log(computerSelection)
-console.log(playRound(playerSelection, computerSelection));
-
-function game() {
-  timesComputerWon = 0
-  timesPlayerWon = 0
-  for (var i = 0; i < 5; i++) {
-    let computerSelection = getComputerChoice();
-    let playerSelection = prompt("Choose rock, paper or scissors:");
-    console.log(playRound(playerSelection, computerSelection));
-  }
-  console.log("The computer won " + timesComputerWon + " times")
-  console.log("The player won " + timesPlayerWon + " times")
-  if (timesComputerWon > timesPlayerWon) {
-    return "Computer won the best of 5"
-  } else if ((timesComputerWon < timesPlayerWon)) {
-    return "Player won the best of 5"
-  } else {
-    return "Draw"
-  }
-}
-
+console.log("está é a escolha da máquina: " + computerSelection)

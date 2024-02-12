@@ -3,11 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
   <link rel="stylesheet" href="index.css">
   <title>Rock Paper Scissors</title>
 </head>
 <body>
-  
+  <section>
+    <p id="show-winner"></p>
+    <div class="score">
+      <div class="player-score-container">
+        <p id="player-score">Player score:</p>
+      </div>
+      <div class="computer-score-container">
+        <p id="computer-score">Computer score:</p> 
+      </div>
+    </div>
+    <div class="buttons">
+      <button id="rock">Rock</button>
+      <button id="paper">Paper</button>
+      <button id="scissors">Scissors</button>
+    </div>
+    <div id="result"></div>
+    <button id="reset">Reset</button>
+</section>
+<div id="footer">
+  <p>Rock Paper Scissors project from The Odin Project</p>
+  <a href="https://github.com/felipeshibukawa">go to github</a>
+</div>
 </body>
 </html>
